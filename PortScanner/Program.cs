@@ -22,11 +22,7 @@ namespace PortScanner
                 Console.WriteLine("Insira o endereço IP: (exemplo: 192.168.1.248)");
                 enderecoIp = Console.ReadLine();
 
-                if (EhEnderecoIPV4(enderecoIp))
-                {
-                    Console.WriteLine($"IP é valido");
-                    break;
-                }
+                if (EhEnderecoIPV4(enderecoIp)) break;
             }
 
             while (true)
@@ -45,23 +41,26 @@ namespace PortScanner
                 }
             }
 
-            for (int porta = portaMin; porta < portaMax+1; porta++)
+            for ( ; portaMin < portaMax +1; portaMin++)
             {
                 try
                 {
                     Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                    IPEndPoint endpoint = new IPEndPoint(IPAddress.Parse(enderecoIp), porta);
+                    IPEndPoint endpoint = new IPEndPoint(IPAddress.Parse(enderecoIp), portaMin);
+
                     socket.Connect(endpoint);
-                    portas.Add(porta); 
+
+                    portas.Add(portaMin); 
+
                     Console.WriteLine(" ");
-                    Console.WriteLine("Porta aberta encontrada..." + porta);
+                    Console.WriteLine("Porta aberta encontrada..." + portaMin);
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine(e.Message);
                 }
             }
-            portas.ForEach(p => Console.WriteLine($"Porta {p} está aberta no endereço {enderecoIp}"));
+            portas.ForEach(p => Console.WriteLine($"Porta: {p} está aberta no endereço: {enderecoIp}"));
         }
 
         public static bool EhEnderecoIPV4(string enderecoIp)
