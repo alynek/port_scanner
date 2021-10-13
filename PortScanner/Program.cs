@@ -22,7 +22,12 @@ namespace PortScanner
                 Console.WriteLine("Insira o endereço IP: (exemplo: 192.168.1.248)");
                 enderecoIp = Console.ReadLine();
 
-                if (EhEnderecoIPV4(enderecoIp)) break;
+                enderecoIp = EhEnderecoIPV4(enderecoIp);
+
+                if (enderecoIp != null)
+                {
+                    break;
+                }
             }
 
             while (true)
@@ -63,15 +68,15 @@ namespace PortScanner
             portas.ForEach(p => Console.WriteLine($"Porta: {p} está aberta no endereço: {enderecoIp}"));
         }
 
-        public static bool EhEnderecoIPV4(string enderecoIp)
+        public static string EhEnderecoIPV4(string enderecoIp)
         {
             Regex regex = new Regex(@"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b");
 
             MatchCollection resultado = regex.Matches(enderecoIp);
 
-            if (resultado.Count > 0) return true;
+            if (resultado.Count > 0) return resultado[0].ToString();
 
-            return false;
+            return null;
         }
 
         public static bool PortaEhValida(string[] arrayDePortas)
